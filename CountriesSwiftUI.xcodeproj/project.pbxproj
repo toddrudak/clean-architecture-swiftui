@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		4819F10E2CDF5819003CA0AE /* EnvironmentOverrides in Frameworks */ = {isa = PBXBuildFile; productRef = 4819F10D2CDF5819003CA0AE /* EnvironmentOverrides */; };
 		4819F1172CDF6DD4003CA0AE /* ViewInspector in Frameworks */ = {isa = PBXBuildFile; productRef = 4819F1162CDF6DD4003CA0AE /* ViewInspector */; };
+		E3A61E6B7F1BEC416ED1FB9A /* Segment in Frameworks */ = {isa = PBXBuildFile; productRef = 3106C95365B3A1FB7A71A2D4 /* Segment */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +46,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4819F10E2CDF5819003CA0AE /* EnvironmentOverrides in Frameworks */,
+				E3A61E6B7F1BEC416ED1FB9A /* Segment in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -98,6 +100,7 @@
 			name = CountriesSwiftUI;
 			packageProductDependencies = (
 				4819F10D2CDF5819003CA0AE /* EnvironmentOverrides */,
+				3106C95365B3A1FB7A71A2D4 /* Segment */,
 			);
 			productName = CountriesSwiftUI;
 			productReference = 488734172CDCA2DB00B400A3 /* CountriesSwiftUI.app */;
@@ -161,6 +164,7 @@
 			packageReferences = (
 				4819F10C2CDF5819003CA0AE /* XCRemoteSwiftPackageReference "EnvironmentOverrides" */,
 				4819F1152CDF6DD4003CA0AE /* XCRemoteSwiftPackageReference "ViewInspector" */,
+				CD59F3D789C0A89CB4CD6DEC /* XCRemoteSwiftPackageReference "analytics-swift" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 488734182CDCA2DB00B400A3 /* Products */;
@@ -490,9 +494,22 @@
 				minimumVersion = 0.10.0;
 			};
 		};
+		CD59F3D789C0A89CB4CD6DEC /* XCRemoteSwiftPackageReference "analytics-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/segmentio/analytics-swift";
+			requirement = {
+				kind = exactVersion;
+				version = 1.10.4;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		3106C95365B3A1FB7A71A2D4 /* Segment */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CD59F3D789C0A89CB4CD6DEC /* XCRemoteSwiftPackageReference "analytics-swift" */;
+			productName = Segment;
+		};
 		4819F10D2CDF5819003CA0AE /* EnvironmentOverrides */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 4819F10C2CDF5819003CA0AE /* XCRemoteSwiftPackageReference "EnvironmentOverrides" */;

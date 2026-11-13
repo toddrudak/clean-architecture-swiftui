@@ -14,6 +14,10 @@ struct MainApp: App {
     
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
 
+    init() {
+        TorqueLiftAnalytics.start(consent: true)
+    }
+
     var body: some Scene {
         WindowGroup {
             appDelegate.rootView
