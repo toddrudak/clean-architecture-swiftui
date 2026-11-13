@@ -40,7 +40,8 @@ jobs:
           set -o pipefail;
           xcodebuild test -project CountriesSwiftUI.xcodeproj -scheme CountriesSwiftUI
           -destination "platform=iOS Simulator,name=$SIMULATOR"
+          -parallel-testing-enabled NO -maximum-parallel-testing-workers 1
           -skipPackagePluginValidation -skipMacroValidation 2>&1 | tee test.log
       - name: Failures
         if: failure()
-        run: grep -nE "recorded an issue|Expectation failed|error:|Test Case.*failed" -A3 test.log | head -80 || true
+        run: grep -niE "recorded an issue|expectation failed|error:|test case.*failed|✘" -A3 test.log | head -80 || true
