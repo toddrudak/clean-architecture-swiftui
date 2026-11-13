@@ -8,8 +8,20 @@ jobs:
     runs-on: macos-15
     steps:
       - uses: actions/checkout@v4
+      # The latest ViewInspector uses iOS 26 SDK types (GlassEffectTransition), so build with the
+      # newest Xcode the runner image has.
+      - name: Select Xcode
+        run: |
+          XCODE=$(ls -d /Applications/Xcode_26*.app | sort -V | tail -1)
+          sudo xcode-select -s "$XCODE"
+          xcodebuild -version
+      - name: Pick a simulator
+        run: |
+          NAME=$(xcrun simctl list devices available | grep -m1 -oE 'iPhone [0-9A-Za-z ]+ \(' | sed 's/ ($//')
+          echo "SIMULATOR=$NAME" >> "$GITHUB_ENV"
+          echo "Using $NAME"
       - name: Test
         run: >
           xcodebuild test -project CountriesSwiftUI.xcodeproj -scheme CountriesSwiftUI
-          -destination 'platform=iOS Simulator,name=iPhone 16'
+          -destination "platform=iOS Simulator,name=$SIMULATOR"
           -skipPackagePluginValidation -skipMacroValidation
