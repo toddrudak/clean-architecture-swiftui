@@ -37,6 +37,10 @@ jobs:
           echo "Using $NAME"
       - name: Test
         run: >
+          set -o pipefail;
           xcodebuild test -project CountriesSwiftUI.xcodeproj -scheme CountriesSwiftUI
           -destination "platform=iOS Simulator,name=$SIMULATOR"
-          -skipPackagePluginValidation -skipMacroValidation
+          -skipPackagePluginValidation -skipMacroValidation 2>&1 | tee test.log
+      - name: Failures
+        if: failure()
+        run: grep -nE "recorded an issue|Expectation failed|error:|Test Case.*failed" -A3 test.log | head -80 || true
