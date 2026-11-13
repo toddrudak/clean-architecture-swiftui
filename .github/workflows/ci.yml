@@ -4,12 +4,44 @@ on:
   push:
     branches: [master]
 jobs:
+  # Compiles the app and its tests: the check that the code builds, apart from which tests pass.
+  build:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      # The latest ViewInspector uses iOS 26 SDK types (GlassEffectTransition), so build with the
+      # newest Xcode the runner image has.
+      - name: Select Xcode
+        run: |
+          XCODE=$(ls -d /Applications/Xcode_26*.app | sort -V | tail -1)
+          sudo xcode-select -s "$XCODE"
+          xcodebuild -version
+      - name: Build for testing
+        run: >
+          xcodebuild build-for-testing -project CountriesSwiftUI.xcodeproj -scheme CountriesSwiftUI
+          -destination 'generic/platform=iOS Simulator'
+          -skipPackagePluginValidation -skipMacroValidation
   test:
     runs-on: macos-15
     steps:
       - uses: actions/checkout@v4
+      - name: Select Xcode
+        run: |
+          XCODE=$(ls -d /Applications/Xcode_26*.app | sort -V | tail -1)
+          sudo xcode-select -s "$XCODE"
+          xcodebuild -version
+      - name: Pick a simulator
+        run: |
+          NAME=$(xcrun simctl list devices available | grep -m1 -oE 'iPhone [0-9A-Za-z ]+ \(' | sed 's/ ($//')
+          echo "SIMULATOR=$NAME" >> "$GITHUB_ENV"
+          echo "Using $NAME"
       - name: Test
         run: >
+          set -o pipefail;
           xcodebuild test -project CountriesSwiftUI.xcodeproj -scheme CountriesSwiftUI
-          -destination 'platform=iOS Simulator,name=iPhone 16'
-          -skipPackagePluginValidation -skipMacroValidation
+          -destination "platform=iOS Simulator,name=$SIMULATOR"
+          -parallel-testing-enabled NO -maximum-parallel-testing-workers 1
+          -skipPackagePluginValidation -skipMacroValidation 2>&1 | tee test.log
+      - name: Failures
+        if: failure()
+        run: grep -niE "recorded an issue|expectation failed|error:|test case.*failed|✘" -A3 test.log | head -80 || true
