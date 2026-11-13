@@ -4,12 +4,27 @@ on:
   push:
     branches: [master]
 jobs:
-  test:
+  # Compiles the app and its tests: the check that the code builds, apart from which tests pass.
+  build:
     runs-on: macos-15
     steps:
       - uses: actions/checkout@v4
       # The latest ViewInspector uses iOS 26 SDK types (GlassEffectTransition), so build with the
       # newest Xcode the runner image has.
+      - name: Select Xcode
+        run: |
+          XCODE=$(ls -d /Applications/Xcode_26*.app | sort -V | tail -1)
+          sudo xcode-select -s "$XCODE"
+          xcodebuild -version
+      - name: Build for testing
+        run: >
+          xcodebuild build-for-testing -project CountriesSwiftUI.xcodeproj -scheme CountriesSwiftUI
+          -destination 'generic/platform=iOS Simulator'
+          -skipPackagePluginValidation -skipMacroValidation
+  test:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
       - name: Select Xcode
         run: |
           XCODE=$(ls -d /Applications/Xcode_26*.app | sort -V | tail -1)
