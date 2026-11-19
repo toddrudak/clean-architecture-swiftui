@@ -30,7 +30,16 @@ struct CountryDetails: View {
     }
     
     var body: some View {
-        content
+        TorqueLiftFlag(flag: "flag-caption-v1", variant: {
+            CountryDetailsFlagCaptionVariant(
+                country: country,
+                details: details,
+                detailsSheet: routingBinding.detailsSheet,
+                loadDetails: { loadCountryDetails(forceReload: $0) },
+                cancelLoading: { details.cancelLoading() },
+                openFlag: { showCountryDetailsSheet() }
+            )
+        }) { content }
             .navigationBarTitle(country.name(locale: locale))
             .onReceive(routingUpdate) { self.routingState = $0 }
             .onReceive(inspection.notice) { self.inspection.visit(self, $0) }
