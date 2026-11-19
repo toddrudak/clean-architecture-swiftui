@@ -1,0 +1,19 @@
+version: 1
+platforms: [ios]
+app_path: "."
+scope: ["CountriesSwiftUI/UI/**"]
+user_id: {type: id, source: "session.userId"}
+buckets: [browse]
+pages:
+  - {route: "/countries", bucket: browse}
+events:
+  Country Details Loaded:
+    bucket: browse
+    stage: activation
+    properties:
+      country_code: {type: id, source: "country.alpha3Code", required: true}
+  Country Flag Opened:
+    bucket: browse
+    stage: activation
+    properties:
+      country_code: {type: id, source: "country.alpha3Code", required: true}

@@ -56,12 +56,15 @@ private extension CountryDetails {
 
     func loadCountryDetails(forceReload: Bool) {
         $details.load {
-            try await injected.interactors.countries
+            let countryDetails = try await injected.interactors.countries
                 .loadCountryDetails(country: country, forceReload: forceReload)
+            TorqueLiftAnalytics.countryDetailsLoaded(countryCode: country.alpha3Code)
+            return countryDetails
         }
     }
-    
+
     func showCountryDetailsSheet() {
+        TorqueLiftAnalytics.countryFlagOpened(countryCode: country.alpha3Code)
         injected.appState[\.routing.countryDetails.detailsSheet] = true
     }
 }
