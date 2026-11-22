@@ -64,7 +64,6 @@ private extension CountryDetails {
     }
 
     func showCountryDetailsSheet() {
-        TorqueLiftAnalytics.countryFlagOpened(countryCode: country.alpha3Code)
         injected.appState[\.routing.countryDetails.detailsSheet] = true
     }
 }
