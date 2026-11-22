@@ -29,6 +29,11 @@ enum TorqueLiftAnalytics {
         state.send { $0.anonymousId }
     }
 
+    /// The signed-in user's id, for the flag file of an experiment PR; nil before consent or `identify`.
+    static var userId: String? {
+        state.send { $0.userId }.flatMap { $0 }
+    }
+
     static func identify(userId: String) {
         state.send { $0.identify(userId: userId) }
     }
@@ -47,6 +52,15 @@ enum TorqueLiftAnalytics {
         var properties = state.properties()
         properties["country_code"] = countryCode
         state.send { $0.track(name: "Country Flag Opened", properties: properties) }
+    }
+
+    /// Experiment Viewed, sent by the flag file an experiment PR adds.
+    static func experimentViewed(experimentId: String, variationId: String, flagKey: String? = nil) {
+        var properties = state.properties()
+        properties["experiment_id"] = experimentId
+        properties["variation_id"] = variationId
+        if let flagKey = flagKey { properties["flag_key"] = flagKey }
+        state.send { $0.track(name: "Experiment Viewed", properties: properties) }
     }
 
     private static let state = State()

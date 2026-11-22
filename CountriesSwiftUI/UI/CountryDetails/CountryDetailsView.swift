@@ -30,7 +30,9 @@ struct CountryDetails: View {
     }
     
     var body: some View {
-        content
+        TorqueLiftFlag(flag: "flag-caption-v1", variant: {
+            FlagCaptionVariant(showsCaption: details.value != nil && country.flag != nil) { content }
+        }) { content }
             .navigationBarTitle(country.name(locale: locale))
             .onReceive(routingUpdate) { self.routingState = $0 }
             .onReceive(inspection.notice) { self.inspection.visit(self, $0) }
