@@ -102,7 +102,9 @@ private extension CountryDetails {
     func loadedView(_ countryDetails: DBModel.CountryDetails) -> some View {
         List {
             country.flag.map { url in
-                flagView(url: url)
+                TorqueLiftFlag(flag: "flag-caption-v1", variant: { CaptionedFlag { flagView(url: url) } }) {
+                    flagView(url: url)
+                }
             }
             basicInfoSectionView(countryDetails: countryDetails)
             if countryDetails.currencies.count > 0 {
