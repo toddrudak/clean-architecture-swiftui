@@ -10,6 +10,7 @@
 		4819F10E2CDF5819003CA0AE /* EnvironmentOverrides in Frameworks */ = {isa = PBXBuildFile; productRef = 4819F10D2CDF5819003CA0AE /* EnvironmentOverrides */; };
 		4819F1172CDF6DD4003CA0AE /* ViewInspector in Frameworks */ = {isa = PBXBuildFile; productRef = 4819F1162CDF6DD4003CA0AE /* ViewInspector */; };
 		E3A61E6B7F1BEC416ED1FB9A /* Segment in Frameworks */ = {isa = PBXBuildFile; productRef = 3106C95365B3A1FB7A71A2D4 /* Segment */; };
+		FDF211BE4511B06D2902E86D /* GrowthBook-IOS in Frameworks */ = {isa = PBXBuildFile; productRef = D83E9CE594D00286C3F89725 /* GrowthBook-IOS */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +48,7 @@
 			files = (
 				4819F10E2CDF5819003CA0AE /* EnvironmentOverrides in Frameworks */,
 				E3A61E6B7F1BEC416ED1FB9A /* Segment in Frameworks */,
+				FDF211BE4511B06D2902E86D /* GrowthBook-IOS in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -101,6 +103,7 @@
 			packageProductDependencies = (
 				4819F10D2CDF5819003CA0AE /* EnvironmentOverrides */,
 				3106C95365B3A1FB7A71A2D4 /* Segment */,
+				D83E9CE594D00286C3F89725 /* GrowthBook-IOS */,
 			);
 			productName = CountriesSwiftUI;
 			productReference = 488734172CDCA2DB00B400A3 /* CountriesSwiftUI.app */;
@@ -165,6 +168,7 @@
 				4819F10C2CDF5819003CA0AE /* XCRemoteSwiftPackageReference "EnvironmentOverrides" */,
 				4819F1152CDF6DD4003CA0AE /* XCRemoteSwiftPackageReference "ViewInspector" */,
 				CD59F3D789C0A89CB4CD6DEC /* XCRemoteSwiftPackageReference "analytics-swift" */,
+				A310036979BF3E4B874F3C90 /* XCRemoteSwiftPackageReference "growthbook-swift" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 488734182CDCA2DB00B400A3 /* Products */;
@@ -494,6 +498,14 @@
 				minimumVersion = 0.10.0;
 			};
 		};
+		A310036979BF3E4B874F3C90 /* XCRemoteSwiftPackageReference "growthbook-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/growthbook/growthbook-swift";
+			requirement = {
+				kind = exactVersion;
+				version = 2.0.2;
+			};
+		};
 		CD59F3D789C0A89CB4CD6DEC /* XCRemoteSwiftPackageReference "analytics-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/segmentio/analytics-swift";
@@ -519,6 +531,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4819F1152CDF6DD4003CA0AE /* XCRemoteSwiftPackageReference "ViewInspector" */;
 			productName = ViewInspector;
+		};
+		D83E9CE594D00286C3F89725 /* GrowthBook-IOS */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A310036979BF3E4B874F3C90 /* XCRemoteSwiftPackageReference "growthbook-swift" */;
+			productName = GrowthBook-IOS;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
