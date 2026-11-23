@@ -6,8 +6,8 @@ import Segment
 /// visitor's consent: `TorqueLiftAnalytics.start(consent: ...)`. Nothing is sent before
 /// consent, and a call made without it is dropped.
 enum TorqueLiftAnalytics {
-    static let planVersion = 1
-    static let planSHA256 = "06633d198c5aa3d888af3b21f1b29fc9c1a33a489e877c3b63af3d6b1aaac45e"
+    static let planVersion = 2
+    static let planSHA256 = "9ab856b89d5f069ac6d8b91b410336bffffe16aaf79181ea83ce4aa11f87889e"
     private static let writeKey = "c4b09870ff4f625cb222165e0"
     private static let ingestHost = "ingest.torquelift.ai/v1"
 
@@ -29,6 +29,11 @@ enum TorqueLiftAnalytics {
         state.send { $0.anonymousId }
     }
 
+    /// The signed-in user's id, for the flag file of an experiment PR; nil before consent or `identify`.
+    static var userId: String? {
+        state.send { $0.userId }.flatMap { $0 }
+    }
+
     static func identify(userId: String) {
         state.send { $0.identify(userId: userId) }
     }
@@ -47,6 +52,21 @@ enum TorqueLiftAnalytics {
         var properties = state.properties()
         properties["country_code"] = countryCode
         state.send { $0.track(name: "Country Flag Opened", properties: properties) }
+    }
+
+    static func countrySelected(countryCode: String) {
+        var properties = state.properties()
+        properties["country_code"] = countryCode
+        state.send { $0.track(name: "Country Selected", properties: properties) }
+    }
+
+    /// Experiment Viewed, sent by the flag file an experiment PR adds.
+    static func experimentViewed(experimentId: String, variationId: String, flagKey: String? = nil) {
+        var properties = state.properties()
+        properties["experiment_id"] = experimentId
+        properties["variation_id"] = variationId
+        if let flagKey = flagKey { properties["flag_key"] = flagKey }
+        state.send { $0.track(name: "Experiment Viewed", properties: properties) }
     }
 
     private static let state = State()

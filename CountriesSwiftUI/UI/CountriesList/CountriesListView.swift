@@ -110,6 +110,9 @@ private extension CountriesList {
             NavigationLink(value: country) {
                 CountryCell(country: country)
             }
+            .simultaneousGesture(TapGesture().onEnded {
+                TorqueLiftAnalytics.countrySelected(countryCode: country.alpha3Code)
+            })
         }
         .navigationDestination(for: DBModel.Country.self) { country in
             CountryDetails(country: country)
