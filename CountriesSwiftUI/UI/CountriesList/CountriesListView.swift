@@ -116,7 +116,7 @@ private extension CountriesList {
         }
         .searchable(text: $searchText)
         .refreshable {
-            loadCountriesList(forceReload: true)
+            await reloadCountriesList()
         }
         .toolbar {
             ToolbarItem {
@@ -144,6 +144,13 @@ private extension CountriesList {
     private func loadCountriesList(forceReload: Bool) {
         guard forceReload || countries.isEmpty else { return }
         $countriesState.load {
+            try await injected.interactors.countries
+                .refreshCountriesList()
+        }
+    }
+
+    private func reloadCountriesList() async {
+        await $countriesState.reload {
             try await injected.interactors.countries
                 .refreshCountriesList()
         }
