@@ -125,4 +125,16 @@ extension LoadableSubject {
         }
         task.store(in: cancelBag)
     }
+
+    /// Runs the resource to completion before returning, so the caller can await it
+    /// (e.g. from `.refreshable`). Unlike `load`, it does not switch the state to `.isLoading`,
+    /// so the content stays on screen while the pull-to-refresh spinner is showing.
+    @MainActor
+    func reload<T>(_ resource: @escaping () async throws -> T) async where Value == Loadable<T> {
+        do {
+            wrappedValue = .loaded(try await resource())
+        } catch {
+            wrappedValue = .failed(error)
+        }
+    }
 }
